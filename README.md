@@ -72,16 +72,16 @@ Finalmente, encima de todo esto esta HTTP. HTTP nos permite transportar los sigu
 
 
 **Reto Statuscode mas utilizadoss**
-Statuscode	Significado
-200	OK
-301	Redirección permanenze
-302	Encontrado
-303	See other– Mirar en otra página
-307	Redirección temporal
-404	No encontrado
-410	No encontrado permanentemente
-500	Error del servidor
-503	Servidor no responde
+- Statuscode	Significado
+- 200	OK
+- 301	Redirección permanenze
+- 302	Encontrado
+- 303	See other– Mirar en otra página
+- 307	Redirección temporal
+- 404	No encontrado
+- 410	No encontrado permanentemente
+- 500	Error del servidor
+- 503	Servidor no responde
 
 **Retos cabeceras HTTP mas utilizadas**
 
@@ -122,3 +122,110 @@ Este archivo contiene algunos elementos como:
 <h1>XML Path Langugage</h1>
 
 Extensible Markup Language es un lenguaje muy parecido a HTML que se utilizo para crear interfaces y que al igual que HTML esta integrado por etiquetas. Una tecnica para extraer datos de este lenguaje es usando XPATH. Entonces, como HTML es un lenguaje tan parecedo a Extensive Markup Language, podemos usar Xpath para extraer datos de HTML sin ningun problema.
+
+<h1>Tipos de nodos en XPath</h1>
+
+Un nodo es lo mismo que una etiqueta y su contenido. En esta clase nos familiarizamos con el lenguaje HTML y sus etiquetas, dado que vamos a usar XPath para acceder a las etiquetas que tienen la informacion que queremos para extraer su informacion.
+
+<h1>Expresiones en XPath</h1>
+
+La primera expresion que vamos a utilizar es:
+```py
+$x('/')
+#en este caso en  concreto selecciono a todo el documento
+
+$x('/html')
+#En este caso solo selecciono el documento HTML
+```
+Con esta expresion podemos movernos de un sitio a otro de la pagina web. Pero que paca cuando queremos acceder a un nodo en particular pero queremos evitar poner toda la ruta hasta alli??. Pues muy facil, escribimos dobre eslash y ponemos la ruta directamente:
+
+```py
+$x('//h1')
+#en este caso estoy seleccionando todos los nodos con la etiqueta h1
+
+#ahora supongamos que quiero seleccionar el texto de ese nodo, para ello escribo:
+
+$x('//h1/text()')
+
+#por otro lado, si queremos seleccionar el nodo actual lo que hacemos es:
+
+$x('//span/.')
+
+#esto que acabamos de hacer es lo mismo que lo que habiamos hecho antes:
+
+$x('//span')
+
+#pero si queremos seleccionar a todos los nodos por encima del que nos encontramos escribimos:
+
+$x('//span/..')
+```
+
+Finalmente, vamos a aprender a extraer atributos, lo cual hacemos con la siguiente expresion:
+```py
+$x('//span/@class')
+
+#con esta expresion extraemos todos los atributos de tipo class que hay en span. Cuando escribimos @ despues de un slash significa que vamos a extraer un atributo, y despues escribimos el atributo.
+```
+
+<h1>Predicados en Xpath</h1>
+
+Con lo aprendido en la clase anterior no es suficiente para poder filtar todo lo que queremos de las paginas web, para ello necesitamos los predicados.
+
+Supongamos que tengo la siguiente expresion:
+
+```py
+$x('/html/body/div/div')
+```
+
+Sin embargo supongamos que yo no quiero a los dos nodos div, yo solo quiero el primero, para ello uso el predicado [1], que se pone al final del ultimo nodo. 
+
+```py
+$x('/html/body/div/div[1]')
+```
+
+Pero ahora supongamos que yo quiero el ultimos predicado, para ello en vez de usar [1], uso el predicado [last].
+
+```py
+$x('/html/body/div/div[last()]')
+```
+
+Ahora supongamos que quiero traer todos los elementos que hay en el nodo span, pero quiero poner una condicion, y dicha condicion es que al menos contengan el atributo class, para ello escribo
+
+```py
+$x('//span[@class]')
+```
+
+Pero ahora me voy a volver mas exquisito, y es que ahora ademas de que los elementos tengan la clase class, quiero que esa clase sea un texto, en este caso tengo que escribir:
+
+```py
+$x('//span[@class="text"]')
+```
+
+<h1>Operadores en Xpath</h1>
+
+Para ser capaces de filtrar de una forma mas avanzada nos vamos a valer de operadores. Supongamos que quiero traer todos los elementos de spam que tienen una clase distinta a texto, para ello hacemos esto:
+
+```py
+$x('//span[@class != "text"]')
+```
+
+Si recordamos clases anteriores, cuando usamos el predicado [1] o [last()] traemos el ultimo o el primer elemento, sin embargo, que pasa cuando tengo mucho elementos??. En este caso puedo usar un operador para filtrar que elementos quiero, por ejemplo:
+
+```py
+$x('/HTML/body/div/div[position()>1]')
+#esta expresion me trae los elementos que estan de uno para arriba
+```
+
+Por otro lado, tambien podemos usar los operadores logicos "and" y "or", por ejemplo
+
+```py
+#operador logico and
+$x('//span[@class="text and @class="tag-item"]')
+
+#operador logico or
+$x('//span[@class="text" or @class="tag-item"]')
+
+#operador not
+
+$x('//span[not (@class="text")]')
+```
