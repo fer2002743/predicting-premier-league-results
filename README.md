@@ -70,6 +70,11 @@ Finalmente, encima de todo esto esta HTTP. HTTP nos permite transportar los sigu
 
 - Web APIs: APIs is Application Programming Interface which is a software that acts as an intermediary to allow to applications to comunicate between them.
 
+En esta imagen podemos apreciar todo lo anterior:
+<div align="center"> 
+  <img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fdd7a74b3-8b8e-4eb5-b89a-08f4aed238c7%2FUntitled.png?table=block&id=ad82d0a3-00c2-4743-9d85-5b35153074f1&width=1190&userId=&cache=v2" width="250">
+</div>
+
 
 **Reto Statuscode mas utilizadoss**
 - Statuscode	Significado
@@ -116,7 +121,7 @@ Este archivo contiene algunos elementos como:
 
 - **USER-AGENT:** Identifica quien puede acceder al sitio web
 
-- **Directivas:**Las direstivas son: **allow**, este directorio se usa para permitir a los motores de busqueda rastrear un subdirectorio o una pagina. Por otro lado **disallow** se utiliza para idicar que archivos y paginas no se esta permitido acceder.
+- **Directivas:** Las direstivas son: **allow**, este directorio se usa para permitir a los motores de busqueda rastrear un subdirectorio o una pagina. Por otro lado **disallow** se utiliza para idicar que archivos y paginas no se esta permitido acceder.
 
 
 <h1>XML Path Langugage</h1>
@@ -137,7 +142,7 @@ $x('/')
 $x('/html')
 #En este caso solo selecciono el documento HTML
 ```
-Con esta expresion podemos movernos de un sitio a otro de la pagina web. Pero que paca cuando queremos acceder a un nodo en particular pero queremos evitar poner toda la ruta hasta alli??. Pues muy facil, escribimos dobre eslash y ponemos la ruta directamente:
+Con esta expresion podemos movernos de un sitio a otro de la pagina web. Pero que pasa cuando queremos acceder a un nodo en particular pero queremos evitar poner toda la ruta hasta alli??. Pues muy facil, escribimos dobre eslash y ponemos la ruta directamente:
 
 ```py
 $x('//h1')
@@ -169,7 +174,7 @@ $x('//span/@class')
 
 <h1>Predicados en Xpath</h1>
 
-Con lo aprendido en la clase anterior no es suficiente para poder filtar todo lo que queremos de las paginas web, para ello necesitamos los predicados.
+Con lo aprendido en la clase anterior no es suficiente para poder filtrar todo lo que queremos de las paginas web, para ello necesitamos los predicados.
 
 Supongamos que tengo la siguiente expresion:
 
@@ -228,4 +233,77 @@ $x('//span[@class="text" or @class="tag-item"]')
 #operador not
 
 $x('//span[not (@class="text")]')
+```
+
+
+<h1>Wildcards en Xpath</h1>
+
+Que pasa si no sabemos el lugar exacto en el que se encuentra el nodo que queremos escrapear, pero si sabemos mas o menos donde se encuentra?. En estos casos tenemos una solucion llamada wildcards, o en español, comodines.
+
+El primer comodin nos sirve para indicar que queremos traer todos los nodos que estan inmediatamente despues:
+
+```py
+$x('/*')
+#con este comodin podemos traer nodos que no sabaemos como se llaman pero si sabemos donde se encuentran
+```
+
+Si recordamos, con $x('//') podemos saltar niveles en XPath, y con * seleccionamos todos los nodos que se encuentran inmediatamente despues. Pero si combinamos
+estas dos expresiones, seleccionamos todos los nodos en todas direcciones, o en otras palabras, lo seleccionamos todo:
+
+```py
+$x('//*')
+```
+
+Por otro lado, el siguiente wildcard nos trae a todos los nodos span que tengan clase text:
+
+```py
+$x('//span[@class="text"]/@*')
+```
+
+El siguiente wildcard nos permite traer todos los atributos de los nodos div:
+
+```py
+$x('/HTML/body//div/@*')
+```
+
+Finalmente, tenemos un wildcard que nos permite traernos todo lo que se encuentra inmediatamente despues de donde estamos, sean nodos, texto o culaquier tipo de elementos:
+
+```py
+$x('//span[@class="text" and @itemprop="text"]/node()')
+
+#con esto traemos todo lo que se encuentra despues, independientemente de lo que sea.
+```
+
+<h1>In-text search en Xpath</h1>
+
+En esta clase vamos a aprender a buscar lo que queremos dentro del text.
+
+Supongamos que quiero traer todos los autores que comienzan por determinada letra, por ejemplo la letra A, para ello hago lo siguiente:
+
+```py
+$x('//small[@class="author" and starts-with(., "A")]')
+
+#dentro de starts-with el punto significa que busque en el nodo actual, y la letra entre comillas significa la letra
+```
+
+Pero esto no es todo, tambien podemos usar la funcion contains de la siguiente manera:
+
+```py
+$x('//small[@class="author" and contains(., "RO")]')
+```
+
+Por otro lado, tambien podemos seleccionar lo que queremos fijandonos en las letras finales:
+
+```py
+$x('//small[@class="author" and ends-with(.,"ing")]')
+
+#en el navegador me va a salir error porque en los navegadores usan la version 1.0 de XPath, y esta funcion esta en la version 2.0, sin embargo, cuando ejeccute esta funcion en python no tendre ningun problema
+```
+
+Matches la utilizamos para encontrar un texto en un nodo que coincida con cierta expresion regular.
+
+```py
+$x('//small[@class="author" and matches(., "A.n*")]')
+
+#esto selecciona los nombres que empiezan con A y terminan en n
 ```
