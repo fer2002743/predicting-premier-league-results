@@ -307,3 +307,38 @@ $x('//small[@class="author" and matches(., "A.n*")]')
 
 #esto selecciona los nombres que empiezan con A y terminan en n
 ```
+
+
+<h1>XPath Axes</h1>
+
+Para un nodo el su nodo padre es el que esta inmediatamente encima de el, sin embargo, todos sus antepasados son todos los nodos que estan por encima de el y que estan relacionados de manera directa. Por otro lado, los nodos hijos son aquellos nodos inmediatamente despues del nodo en el que nos encontramos. Sin embargo, todos los nodos descendientes son todos los nodos que se encuentran por debajo. Añado una imagen para que se haga mas facil entender todo lo que acabo de explicar:
+
+<div align="center"> 
+  <img src="https://static.platzi.com/media/user_upload/anchestors-cd09ebcf-160c-43dd-a7c5-e9c45b4140e2.jpg" width="250">
+</div>
+
+Por ejemplo supongamos que quiero traer el nodo en el cual me encuentro actualmente:
+
+```py
+#asi es como lo habiamos hecho antes
+$x('/HTML/body/div/.')
+
+#sin embargo, la manera completa de hacerlo es:
+$('/HTML/body/div/self::nombre del nodo en el que estomos')
+
+#en XPath los dos puntos (::) significan lo mismo que el punto (.). A esto en XPath se le conoce como azucar sintactica, que es una manera mas bonita y corta de escribir algo mucho mas largo y enrrevesado
+
+
+#si por ejemplo me quiero traer los nietos hago:
+
+$x(''/HTML/body/div/child::nombre del nodo en el que estomos')
+
+
+#Pero tambien me puedo traer a los nietos, es decir todos los nodos que estan en niveles inferiores:
+
+$x('/HTML/body/div/descendant::nombre del nodo en el que estomos')
+
+#Pero si me quiero traer a los descendientes del nodo y a el nodo en si mismo lo que hago es:
+
+$x('/HTML/body/div/descendant-or-self::nombre del nodo en el que estomos')
+```
