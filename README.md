@@ -72,7 +72,7 @@ Finalmente, encima de todo esto esta HTTP. HTTP nos permite transportar los sigu
 
 En esta imagen podemos apreciar todo lo anterior:
 <div align="center"> 
-  <img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fdd7a74b3-8b8e-4eb5-b89a-08f4aed238c7%2FUntitled.png?table=block&id=ad82d0a3-00c2-4743-9d85-5b35153074f1&width=1190&userId=&cache=v2" width="250">
+  <img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fdd7a74b3-8b8e-4eb5-b89a-08f4aed238c7%2FUntitled.png?table=block&id=ad82d0a3-00c2-4743-9d85-5b35153074f1&width=1190&userId=&cache=v2" width="500">
 </div>
 
 
@@ -314,7 +314,7 @@ $x('//small[@class="author" and matches(., "A.n*")]')
 Para un nodo el su nodo padre es el que esta inmediatamente encima de el, sin embargo, todos sus antepasados son todos los nodos que estan por encima de el y que estan relacionados de manera directa. Por otro lado, los nodos hijos son aquellos nodos inmediatamente despues del nodo en el que nos encontramos. Sin embargo, todos los nodos descendientes son todos los nodos que se encuentran por debajo. Añado una imagen para que se haga mas facil entender todo lo que acabo de explicar:
 
 <div align="center"> 
-  <img src="https://static.platzi.com/media/user_upload/anchestors-cd09ebcf-160c-43dd-a7c5-e9c45b4140e2.jpg" width="250">
+  <img src="https://static.platzi.com/media/user_upload/anchestors-cd09ebcf-160c-43dd-a7c5-e9c45b4140e2.jpg" width="500">
 </div>
 
 Por ejemplo supongamos que quiero traer el nodo en el cual me encuentro actualmente:
@@ -342,3 +342,174 @@ $x('/HTML/body/div/descendant::nombre del nodo en el que estomos')
 
 $x('/HTML/body/div/descendant-or-self::nombre del nodo en el que estomos')
 ```
+
+<h1>Resumen de todo lo aprendido sobre Xpath</h1>
+
+Esta imagen resume todo lo que hemos parendido de XPath hasta el momento:
+
+<div align="center"> 
+  <img src="https://static.platzi.com/media/user_upload/XPath-Cheatsheet-1411580c-9597-41d7-8065-d41fda768c2e.jpg" width="500">
+</div>
+
+
+<h2>Proyecto Final</h2>
+
+<h1>Construcción de las expresiones de XPath</h1>
+
+En este proyecto final vamos a crear un programa que va a extreaer las noticias de un peridico diariamente de forma automatizada.
+
+El primer paso es extraer los links que nos llevan a las noticias, para ello voy a usar la expresion:
+
+```py
+$x('//div[@class="V_Title"]/h2/a/@href').map(x => x.value)
+```
+
+Una vez tenga la expresion tengo que crear un archivo de texto(.txt) que me servira despues como referencia a la hora de crear mis scripts.
+
+El segundo paso es irme a cualquier noticia y debo percatarme en que cada noticia esta formada por tres elementos, un titulo, un resumen y un cuerpo. El siguiente paso es construir las expresiones de XPath para extraer estos tres elementos:
+
+```py
+#Para obtener el titulo uso la expresion: 
+$x('//div[@class="mb-auto"]/h2/span/text()').map(x => x.wholeText)
+
+#expresion para el resumen:
+$x('//div[@class="lead"]/p/text()').map(x => x.wholeText)
+
+#expresion para el cuerpo:
+$x('//div[@class="html-content"]/p[not(@class)]/text()').map(x => x.wholeText)
+```
+
+<h1>Obteniendo los links de los artículos con Python</h1>
+
+Una vez ya tenemos las expresiones de XPath para obtener acceder a la informacion que queremos el sigiente paso es construir el script de python para extraer toda la informacion que deseemos. 
+
+El **paso numero uno** es importar todos los modulos necesarios, en este caso necesitamos requests y la funcion HTML de lxml.
+
+```py
+import requests
+from lxml import html
+```
+
+En el **segundo paso** vamos a crear las constantes que contiene los links a la informacion del periodico que quermos acceder.
+
+```py
+HOME_URL = 'https://www.larepublica.co'
+
+XPATH_LINK_TO_ARTICLE = '//div[@class="V_Title"]/text-fill/a/@href'
+XPATH_LINK_TO_TITLE = '//div[@class="mb-auto"]/text-fill/span/text()'
+XPATH_LINK_TO_SUMMARY = '//div[@class="lead"]/p/text()'
+XPATH_LINK_TO_BODY = '//div[@class="html-content"]/p[not(@class)]/text()'
+```
+
+El **tercer paso** consiste en crear la estructura basica del script:
+
+```py
+#la funcion parse_home es la que se encarga de obtener
+#los links a las noticias:
+
+def parse_home():
+  pass
+
+#la funcion principal del programa
+def run():
+  parse_home()
+
+#creamos el entry point
+if __name__ == '__main__':
+  run()
+```
+
+Una vez hecho empezaremos con el **paso cuatro** el cual consiste en  escribir el codigo de la funcion parse_home(), encargada de obtener los links que necesitamos. Primero vamos a proteger a nuestro codigo de posibles errores como el status code 404, para ello usaremos un bloque try.
+
+```py
+def pearse():
+    #protejo mi codigo en caso
+    #de errores como el codigo 404
+    try:
+      pass
+
+    except ValueError as ve:
+      print(ve)
+```
+
+Una vez hecho esto procederemos a hacer una peticion al periodico la republica, para ello usaremos el metodo get() del modulo requests. Este metodo nos sirve para hacer una peticion al servidor usando python y nos retorna un objeto con toda la informacion de la respuesta, como el status code y el contenido.
+
+```py
+def pearse():
+    try:
+      response = requests.get(HOME_URL)
+
+    except ValueError as ve:
+      print(ve)
+```
+
+Despues procedo a verificar que todo esta bien (status code 200), si hay algo fuera de lo comun levanto un error.
+
+```py
+def pearse():
+    try:
+      response = requests.get(HOME_URL)
+      if response.status_code == 200:
+        pass
+      else:
+        raise ValueError(f'ERROR: {response.status_code}')
+
+    except ValueError as ve:
+      print(ve)
+```
+
+Genal, ya hemos conseguido la pagina principal del periodico, sin embargo, ahora necesitamos hacer que su contenido se convierta en algo entendible para python. Para conseguir esto accedo al contenido de la respuesta del servidor (response.content) y uso el metodo decode('utf-8) para convertirlo en algoo entendible para python.
+
+```py
+def pearse():
+    try:
+      response = requests.get(HOME_URL)
+      if response.status_code == 200:
+        home = response.content.decode('rtf-8')
+      else:
+        raise ValueError(f'ERROR: {response.status_code}')
+
+    except ValueError as ve:
+      print(ve)
+```
+
+Finalmente necesito tomar el tipo de archivov HTML de home y convertirlo en un tipo de archivo con el cual pueda usar expresiones de XPath para navegar entre sus datos. Para ello usaremos el metodo .fromstring() de la funcion html del modulo xml.
+
+```py
+import requests
+from lxml import html 
+
+HOME_URL = 'https://www.larepublica.co'
+
+XPATH_LINK_TO_ARTICLE = '//div[@class="V_Title"]/text-fill/a/@href'
+XPATH_LINK_TO_TITLE = '//div[@class="mb-auto"]/text-fill/span/text()'
+XPATH_LINK_TO_SUMMARY = '//div[@class="lead"]/p/text()'
+XPATH_LINK_TO_BODY = '//div[@class="html-content"]/p[not(@class)]/text()'
+
+def pearse_home():
+    
+    try:
+      response = requests.get(HOME_URL)
+      if response.status_code == 200:
+        home = response.content.decode('rtf-8')
+
+        parsed = html.fromstring(home)
+
+        #una vez tenemos el archivo en un formato estructurado, vamos a usar XPath para navegar por el archivo y guardaremos esos datos en una lista
+
+        links_to_notices = parsed.xpath(XPATH_LINK_TO_ARTICLE)
+      else:
+        raise ValueError(f'ERROR: {response.status_code}')
+
+    except ValueError as ve:
+      print(ve)
+
+def run():
+  pearse_home()
+
+if __name__ == '__main__':
+  run()
+```
+<h1>Guardando las noticias en archivos de texto</h1>
+
+Ahora que tenemos los links de las noticias vamos a crear un script con la finalidad de ir a cada link y extraer el titulo, el resumen y el cuerpo.
