@@ -36,6 +36,14 @@ Description: This project involves scraping Premier League match results from a 
 ## Installation
 
 Ensure you have Python installed on your machine. Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the project dependencies.
+## Usage
+Provide instructions on how to run the projects, including any specific configurations or parameters.
+
+## Contributing
+If you'd like to contribute, please fork the repository and create a new branch. Pull requests are welcome.
+
+## License
+This project is licensed under the MIT License.
 
 ```bash
 pip install -r requirements.txt
