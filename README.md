@@ -17,7 +17,7 @@ Description: This project focuses on scraping book information from the BooksToS
 
 ### How to Run
 
-1. Clone the repository: `git clone https://github.com/your-username/your-repo.git`
+1. Clone the repository: `git clone https://github.com/fer2002743/web-scraping/blob/main/books_to_scrape.py`
 2. Navigate to the `BooksToScrape` directory: `cd BooksToScrape`
 3. Install the required dependencies: `pip install -r requirements.txt`
 4. Run the scraper: `python scrape_books.py`
@@ -28,7 +28,7 @@ Description: This project involves scraping Premier League match results from a 
 
 ### How to Run
 
-1. Clone the repository: `git clone https://github.com/your-username/your-repo.git`
+1. Clone the repository: `git clone https://github.com/fer2002743/web-scraping/blob/main/scraping_premier_league_data.py`
 2. Navigate to the `PremierLeagueResults` directory: `cd PremierLeagueResults`
 3. Install the required dependencies: `pip install -r requirements.txt`
 4. Run the scraper: `python scrape_premier_league.py`
